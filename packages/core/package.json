@@ -1,0 +1,26 @@
+{
+  "name": "@boilerplate-node/core",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "main": "index.ts",
+  "scripts": {
+    "test": "node ./__tests__/core.test.js"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "aws-sdk": "^2.1518.0",
+    "dotenv": "^16.3.1",
+    "ioredis": "^5.3.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/pg": "^8.10.9",
+    "prisma": "^5.7.0"
+  }
+}

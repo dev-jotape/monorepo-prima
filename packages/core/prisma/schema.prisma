@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  genre       String
+  users       ReadingHistory[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map(name: "app_book")
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  name              String
+  preferredGenres  String[]
+  readingHistory    ReadingHistory[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map(name: "app_user")
+}
+
+model ReadingHistory {
+  id      Int   @id @default(autoincrement())
+  user    User  @relation(fields: [userId], references: [id])
+  userId  Int  
+  book    Book  @relation(fields: [bookId], references: [id])
+  bookId  Int
+  @@map(name: "reading_history")
+  @@unique([userId, bookId])
+}
+
+enum Status {
+  PENDING
+  CONCLUDED
+}

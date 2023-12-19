@@ -1,0 +1,36 @@
+service: worker
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, "development"}
+
+functions:
+  lambdaFunction:
+    handler: index.consumer
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - myqueue
+              - Arn
+
+resources:
+  Resources:
+    myqueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:provider.stage}-sqs-myqueue
+
+custom:
+  serverless-offline-sqs:
+    autoCreate: true
+    apiVersion: "2012-11-05"
+    endpoint: http://0.0.0.0:9324
+    skipCacheInvalidation: false
+
+plugins:
+  - serverless-offline-sqs
+  - serverless-offline
+  - serverless-webpack
